@@ -442,11 +442,22 @@ img.wb{mix-blend-mode:multiply}
 html.tt,html.tt *{transition:background-color .35s,color .35s,border-color .35s!important}
 
 /* ===== modo apresentação ===== */
+.dk-test{position:absolute;inset:0;z-index:5;background:rgb(10 12 40/.55);display:grid;place-items:center;padding:12px}
+.dk-test[hidden]{display:none!important}
+.dk-test .sheet{animation:sheetin .45s cubic-bezier(.2,.9,.3,1.15);display:flex;flex-direction:column;max-height:100%}
+.dk-test .sb{flex:1;overflow:auto}
+.dk-test .sf{position:static}
+.dt-note{font-size:13.5px;color:var(--mute);background:var(--soft);border-radius:var(--r-s);padding:8px 12px}
+.dt-note.bad{color:var(--red);background:color-mix(in srgb,var(--red) 9%,transparent)}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.dk-test .lockcol{top:0;padding-top:24px}
+@media(max-width:900px){.dk-test .lockcol{position:sticky;top:-24px;z-index:2;background:var(--bg);grid-template-columns:84px minmax(0,1fr);padding:8px 0 10px;margin-top:-8px;border-bottom:1px solid var(--line)}.dk-test .lockcol .lockw{max-width:84px}.dk-test .lockcol .dl{display:none}.dk-test .sf .btn{flex:1}}
+
 .deckb{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--bg);color:var(--ink);font-weight:650;font-size:14.5px}
 .deckb:hover{border-color:var(--ink)}
 .deckb svg{width:18px;height:18px;color:var(--blue)}
 @media(max-width:900px){.deckb span{display:none}.deckb{width:42px;padding:0;justify-content:center}.nav .deckb{margin-left:auto}.nav .deckb+.themeb{margin-left:0}}
-.deck{position:fixed;inset:0;z-index:85;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.deck{isolation:isolate;position:fixed;inset:0;z-index:85;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .deck[hidden]{display:none!important}
 .deck.opening{animation:deckin .5s cubic-bezier(.2,.9,.3,1)}
 @keyframes deckin{from{opacity:0;transform:scale(1.03)}}
@@ -647,6 +658,7 @@ html.tt,html.tt *{transition:background-color .35s,color .35s,border-color .35s!
 <div class="deck" id="deck" role="dialog" aria-modal="true" aria-label="Modo apresentação" hidden>
 <div class="dk-top"><span class="logo"><svg viewBox="0 0 26 30" aria-hidden="true"><path d="M6 13V9a7 7 0 0 1 14 0v4" fill="none" stroke="currentColor" stroke-width="3.5"/><rect x="1" y="12" width="24" height="18" rx="4" fill="#2b3df5"/><rect x="11" y="17" width="4" height="8" rx="2" fill="#ffd43b"/></svg>E-Market</span><span class="dk-sec" id="dkSec"></span><span class="dk-num" id="dkNum"></span><button class="x" id="dkClose" aria-label="Sair da apresentação">✕</button></div>
 <div class="dk-stage" id="dkStage"></div>
+<div class="dk-test" id="dkTest" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dtT"><div class="sh"><b id="dtT">Teste o cadeado</b><button class="x" id="dtClose" aria-label="Fechar teste">✕</button></div><div class="sb"><div class="ck"><div class="lockcol"><div id="dtLock"></div><div class="dl"><span>Preciso?</span><span>Cabe?</span><span>É útil?</span></div><p class="lockmsg" id="dtMsg"></p></div><div class="qs" id="dtQs"></div></div></div><div class="sf"><button class="btn alt" id="dtReset">Recomeçar teste</button><button class="btn b" id="dtBack">Voltar à apresentação</button></div></div></div>
 <div class="dk-bot"><button class="btn alt" id="dkPrev">Anterior</button><div class="dots" id="dkDots"></div><button class="btn b" id="dkNext">Próximo</button></div>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -744,7 +756,7 @@ w.dataset.prev=d.join()};
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const LW=mkLock();
 const mountLock=d=>{const slot=$('#lockSlot');if(!slot)return;slot.replaceWith(LW);void LW.offsetWidth;requestAnimationFrame(()=>setLock(LW,d))};
-const confetti=()=>{if(RM)return;const r=LW.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.3,C=['#ffd43b','#2b3df5','#e5384f','#1d7a4c','#12133a'];
+const confetti=(el=LW)=>{if(RM)return;const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.3,C=['#ffd43b','#2b3df5','#e5384f','#1d7a4c','#12133a'];
 for(let i=0;i<46;i++){const c=document.createElement('span');c.className='confetti';c.style.background=C[i%5];c.style.left=cx+'px';c.style.top=cy+'px';document.body.append(c);
 const a=Math.random()*Math.PI*2,v=120+Math.random()*260,dx=Math.cos(a)*v,dy=Math.sin(a)*v-160;
 c.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy+380}px) rotate(${Math.random()*900-450}deg)`,opacity:0}],{duration:1300+Math.random()*700,easing:'cubic-bezier(.15,.6,.4,1)',delay:350}).onfinish=()=>c.remove()}};
@@ -804,7 +816,7 @@ if(id=='closeCart')openCart(false);
 if(id=='goCheckout'){S.step=1;openModal(true)}
 if(id=='next'){S.step=2;renderModal();flash($('#sb'))}
 if(id=='back'){S.step=1;renderModal();flash($('#sb'))}
-if(id=='pay'){S.order={id:'#EM'+String(Date.now()%100000).padStart(5,'0'),t:total()+fee(),pack:S.pack,ship:S.ship,box:4000+Date.now()%999,trip:1+Date.now()%9};S.cart={};S.ans={};S.step=3;renderAll();renderModal();flash($('#sb'));setTimeout(confetti,60)}
+if(id=='pay'){S.order={id:'#EM'+String(Date.now()%100000).padStart(5,'0'),t:total()+fee(),pack:S.pack,ship:S.ship,box:4000+Date.now()%999,trip:1+Date.now()%9};S.cart={};S.ans={};S.step=3;renderAll();renderModal();flash($('#sb'));setTimeout(()=>confetti(),60)}
 if(id=='hBuy'){addKey(DROP);openCart(true)}
 if(id=='hView')showProduct(DROP);
 });
@@ -868,7 +880,7 @@ const SLIDES=[
 {t:'O problema',h:()=>`<div class="in dk-2"><div><p class="dk-k">A proposta do trabalho</p><h2 class="dk-h">A devolução virou crise.</h2><p class="dk-p">Ondas de devolução lotam a logística reversa. O comitê pediu uma resposta que reduza devoluções e torne a operação mais sustentável.</p></div><div><p style="font-weight:650;margin-bottom:12px">Cada item que volta traz:</p><div class="loop"><div class="cost"><b>+</b>Embalagem plástica que vira lixo</div><div class="cost"><b>+</b>Um frete a mais, ida e volta</div><div class="cost"><b>−</b>Um produto que talvez não possa ser revendido como novo</div></div></div></div>`},
 {t:'A causa',h:()=>`<div class="in"><p class="dk-k">Onde o problema começa</p><h2 class="dk-h">O arrependimento começa antes do pagamento.</h2><p class="dk-p">Boa parte das devoluções por arrependimento nasce de compras por impulso. Resolver depois da entrega é caro. A E-Market age no checkout, o último momento antes do erro.</p><div class="tl"><div><i>1</i>Navega</div><div><i>2</i>Sente o impulso</div><div class="act"><i>3</i>Vai pagar<small>Aqui entra a trava</small></div><div><i>4</i>Recebe</div><div><i>5</i>Se arrepende</div><div><i>6</i>Devolve</div></div></div>`},
 {t:'Nossa resposta',h:()=>`<div class="in"><p class="dk-k">Como o site resolve</p><h2 class="dk-h" style="font-size:clamp(30px,4.2vw,56px)">Cada problema tem uma ferramenta na loja.</h2><div class="map">${[['Compra por impulso','Trava da Necessidade no checkout',4],['Etiqueta que engana pelo preço','Preço por uso em cada produto',5],['Comprar o que se usa duas vezes','Aluguel por diária',6],['Dúvida na hora de pagar','Geladeira de 7 dias',7],['Plástico e frete a mais','Caixa que volta e entrega agrupada',8]].map(([p,so,g],i)=>`<button data-go="${g}" style="--i:${i}"><span class="pr">${p}</span><span class="ar" aria-hidden="true">→</span><span class="so">${so}</span></button>`).join('')}</div></div>`},
-{t:'Trava da Necessidade',h:()=>`<div class="in dk-2"><div><p class="dk-k">Funcionalidade 1 de 5</p><h2 class="dk-h">Um cadeado com três segredos.</h2><p class="dk-p">Antes de pagar, a pessoa responde três perguntas. O cadeado só abre quando as três fazem sentido. Compra por impulso pode ir para a geladeira, e o que se usa pouco pode virar aluguel.</p><div class="qlist" id="dkQ"><div><i>?</i>Eu preciso disso?</div><div><i>?</i>Cabe no meu orçamento?</div><div><i>?</i>Vai ser útil de verdade?</div></div><div class="dk-acts"><button class="btn b" data-dk="demo">Testar a trava no site</button></div></div><div class="dk-lock" id="dkLock"></div></div>`,
+{t:'Trava da Necessidade',h:()=>`<div class="in dk-2"><div><p class="dk-k">Funcionalidade 1 de 5</p><h2 class="dk-h">Um cadeado com três segredos.</h2><p class="dk-p">Antes de pagar, a pessoa responde três perguntas. O cadeado só abre quando as três fazem sentido. Compra por impulso pode ir para a geladeira, e o que se usa pouco pode virar aluguel.</p><div class="qlist" id="dkQ"><div><i>?</i>Eu preciso disso?</div><div><i>?</i>Cabe no meu orçamento?</div><div><i>?</i>Vai ser útil de verdade?</div></div><div class="dk-acts"><button class="btn b" data-dk="test">Testar o cadeado</button></div></div><div class="dk-lock" id="dkLock"></div></div>`,
  on:()=>{const w=mkLock();$('#dkLock').append(w);const Q=[...document.querySelectorAll('#dkQ i')];
  const SQ=[['idle','idle','idle'],['ok','idle','idle'],['ok','no','idle'],['ok','ok','idle'],['ok','ok','ok'],['ok','ok','ok'],['ok','ok','ok']];let k=0;
  const step=()=>{const d=SQ[k];setLock(w,d);Q.forEach((q,i)=>{q.className=d[i]=='idle'?'':d[i];q.textContent=d[i]=='ok'?'✓':d[i]=='no'?'✕':'?'});k=(k+1)%SQ.length};
@@ -881,13 +893,33 @@ const SLIDES=[
 {t:'Geladeira de 7 dias',h:()=>`<div class="in dk-2"><div class="dk-fridge">${FRIDGE()}</div><div><p class="dk-k">Funcionalidade 4 de 5</p><h2 class="dk-h">O impulso vira venda adiada, não perdida.</h2><div class="fsteps"><div><b>Guardar</b><span>Na dúvida, o item vai para a geladeira.</span></div><div><b>Esperar 7 dias</b><span>O preço fica reservado durante a semana.</span></div><div><b>Decidir</b><span>Quero leva ao carrinho. Desisti é uma compra evitada.</span></div></div></div></div>`},
 {t:'Logística verde',h:()=>`<div class="in"><p class="dk-k">Funcionalidade 5 de 5</p><h2 class="dk-h">Zero plástico, menos viagens.</h2><div class="dk-2" style="margin-top:28px;align-items:start"><div class="ms" style="grid-template-columns:minmax(0,1fr);margin-top:0"><div><i>1</i><div><b>Sem plástico de uso único</b><span>Caixa retornável ou papel kraft, com calço de papel.</span></div></div><div><i>2</i><div><b>Entrega agrupada por bairro</b><span>Frete grátis acima de R$ 199 como incentivo.</span></div></div><div><i>3</i><div><b>Devoluções triadas</b><span>O que volta vira item revisado, com garantia.</span></div></div></div><div><div class="label in" id="dkLabel"><div class="code"><small>Caixa retornável</small>EM-4821</div><div><div class="lives">${Array.from({length:10},(_,i)=>`<i data-n="${i}">${i+1}</i>`).join('')}</div><p>R$ 10 de cashback quando a caixa volta. Até 10 viagens por caixa.</p></div></div></div></div></div>`,
  on:()=>{const L=[...document.querySelectorAll('#dkLabel .lives i')];let n=0;const f=()=>{L.forEach((x,i)=>x.classList.toggle('f',i<n));n=n>=10?0:n+1};f();if(!RM)DK.timers.push(setInterval(f,450));else L.forEach(x=>x.classList.add('f'))}},
-{t:'Metas',h:()=>`<div class="in"><p class="dk-k">Metas para 12 meses</p><h2 class="dk-h">Onde queremos chegar.</h2><div class="kp"><div><b class="kc" data-to="-30" data-suf="%">0%</b><span>devoluções por arrependimento</span></div><div><b>0 g</b><span>de plástico de uso único por pedido</span></div><div><b class="kc" data-to="60" data-suf="%">0%</b><span>das entregas agrupadas por bairro</span></div><div><b class="kc" data-to="10" data-suf="">0</b><span>viagens por caixa retornável</span></div></div><p class="dk-p" style="font-size:15px">Metas propostas pelo comitê, a validar em piloto.</p></div>`,
+{t:'Metas',h:()=>`<div class="in"><p class="dk-k">Metas para 12 meses</p><h2 class="dk-h">Onde queremos chegar.</h2><div class="kp"><div><b class="kc" data-to="-30" data-suf="%">0%</b><span>devoluções por arrependimento</span></div><div><b>0 g</b><span>de plástico de uso único por pedido</span></div><div><b class="kc" data-to="60" data-suf="%">0%</b><span>das entregas agrupadas por bairro</span></div><div><b class="kc" data-to="10" data-suf="">0</b><span>viagens por caixa retornável</span></div></div></div>`,
  on:()=>document.querySelectorAll('#dkStage .kc').forEach(el=>{const to=+el.dataset.to,t0=performance.now();const f=t=>{const k=RM?1:Math.min(1,(t-t0)/1300),e=1-Math.pow(1-k,3),v=Math.round(to*e);el.textContent=(v<0?'−'+(-v):v)+el.dataset.suf;if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})},
 {t:'Como medir',h:()=>`<div class="in"><p class="dk-k">Indicadores</p><h2 class="dk-h">Como vamos medir.</h2><div class="ms"><div><i>%</i><div><b>Taxa de devolução por arrependimento</b><span>Antes e depois da Trava da Necessidade.</span></div></div><div><i>7d</i><div><b>Conversão da geladeira</b><span>Quantos itens guardados viram compra depois de 7 dias.</span></div></div><div><i>g</i><div><b>Plástico por pedido</b><span>E quantas caixas retornáveis voltam por mês.</span></div></div><div><i>R$</i><div><b>Ticket médio e receita de aluguel</b><span>Para mostrar que vender melhor não é vender menos.</span></div></div></div></div>`},
-{t:'Encerramento',h:()=>`<div class="in dk-end" style="display:grid"><div class="lockw" id="dkEndLock" style="max-width:160px"></div><h2 class="dk-h" style="margin-top:18px">Obrigado.</h2><p class="dk-p">A loja está no ar com tudo funcionando. Explore os produtos, alugue, teste o cadeado no checkout.</p><div class="dk-acts"><button class="btn b" data-dk="close">Explorar a loja</button><button class="btn alt" data-dk="demo">Testar a trava</button><button class="btn alt" data-dk="first">Recomeçar</button></div></div>`,
+{t:'Encerramento',h:()=>`<div class="in dk-end" style="display:grid"><div class="lockw" id="dkEndLock" style="max-width:160px"></div><h2 class="dk-h" style="margin-top:18px">Obrigado.</h2><p class="dk-p">A loja está no ar com tudo funcionando. Explore os produtos, alugue, teste o cadeado no checkout.</p><div class="dk-acts"><button class="btn b" data-dk="close">Explorar a loja</button><button class="btn alt" data-dk="test">Testar o cadeado</button><button class="btn alt" data-dk="first">Recomeçar</button></div></div>`,
  on:()=>{const w=mkLock();$('#dkEndLock').replaceWith(w);w.style.maxWidth='160px';DK.timers.push(setTimeout(()=>{setLock(w,['ok','ok','ok']);if(!RM){LW0=w;}},500))}}];
 let LW0=null;
-const dkGo=(n,dir)=>{n=Math.max(0,Math.min(SLIDES.length-1,n));dkClear();const sl=SLIDES[n],st=$('#dkStage');
+/* teste do cadeado (só na apresentação) */
+const TI=[{k:'t14',id:14},{k:'t1',id:1}];let TA={},TB='',TL=null;
+const tDials=()=>{const tot=TI.reduce((a,i)=>a+byId(i.id).p,0),B=num(TB);const st=f=>TI.some(i=>(TA[i.k]||{})[f]===0)?'no':TI.every(i=>(TA[i.k]||{})[f]!=null)?'ok':'idle';return[st('n'),!B?'idle':tot>B?'no':'ok',st('u')]};
+const tOpt=(k,f,arr)=>arr.map(([l,v])=>`<button class="opt" data-ta="${k}" data-tf="${f}" data-tv="${v}" aria-pressed="${(TA[k]||{})[f]===v}">${l}</button>`).join('');
+const tRender=()=>{const tot=TI.reduce((a,i)=>a+byId(i.id).p,0),B=num(TB),d=tDials(),open=d.every(x=>x=='ok');
+$('#dtQs').innerHTML=`<p class="dt-note">Carrinho de exemplo, só para o teste. Nada vai para o carrinho da loja.</p>
+<div class="qbox"><h3>1. Eu preciso disso?</h3>${TI.map(i=>{const p=byId(i.id),a=TA[i.k]||{};return`<div class="ti"><header><span>${p.n}</span><span>${brl(p.p)}</span></header><div class="opts">${tOpt(i.k,'n',NEED)}</div>${a.n===0?`<p class="dt-note bad">Compra por impulso. Na loja, este item poderia ir para a geladeira de 7 dias.</p>`:''}</div>`}).join('')}</div>
+<div class="qbox"><h3>2. Cabe no meu orçamento?</h3><div class="field"><label for="dtBud">Posso gastar este mês<input id="dtBud" inputmode="decimal" placeholder="Ex.: 600" value="${TB}"></label></div><div class="qchips">${[300,500,800].map(v=>`<button class="opt" data-tb="${v}" aria-pressed="${num(TB)==v}">${brl(v)}</button>`).join('')}</div><div class="meter ${B&&tot>B?'over':''}"><i style="width:${B?Math.min(100,tot/B*100):0}%"></i></div><p class="hrs">Carrinho: <b>${brl(tot)}</b>${B?(tot>B?`. Passa ${brl(tot-B)} do que você pode gastar.`:`, ${Math.round(tot/B*100)}% do que você pode gastar.`):''}</p></div>
+<div class="qbox"><h3>3. Vai ser útil de verdade?</h3>${TI.map(i=>{const p=byId(i.id),a=TA[i.k]||{};return`<div class="ti"><header><span>${p.n}</span><span class="warn">${brlc(cpu(p))} por ${p.un}</span></header><div class="opts">${tOpt(i.k,'u',USE)}</div>${a.u===0?`<p class="dt-note bad">Uso raro.${p.r?` Na loja, daria para alugar por ${brl(p.r)} a diária.`:' Na loja, o item poderia ir para a geladeira.'}</p>`:''}</div>`}).join('')}</div>`;
+$('#dtMsg').textContent=open?'Destravado. Essa compra faz sentido.':d.includes('no')?'Travado. Veja o que está em vermelho.':'Responda as três perguntas para abrir.';$('#dtMsg').style.color=open?'':'var(--mute)';
+const was=TL.classList.contains('open');setLock(TL,d);if(open&&!was)setTimeout(()=>confetti(TL),350);
+const bi=$('#dtBud');bi.addEventListener('input',()=>{TB=bi.value;const pos=bi.selectionStart;tRender();const nb=$('#dtBud');nb.focus();try{nb.setSelectionRange(pos,pos)}catch(e){}})};
+const tOpen=()=>{TA={};TB='';TL=mkLock();$('#dtLock').replaceChildren(TL);$('#dkTest').hidden=false;tRender();$('#dtClose').focus()};
+const tClose=()=>{$('#dkTest').hidden=true;$('#dkNext').focus()};
+$('#dkTest').addEventListener('click',e=>{const t=e.target.closest('button');if(!t){if(e.target.id=='dkTest')tClose();return}const d=t.dataset;
+if(d.ta){TA[d.ta]={...TA[d.ta],[d.tf]:+d.tv};tRender()}
+if(d.tb){TB=d.tb;tRender()}
+if(t.id=='dtReset'){TA={};TB='';TL.classList.remove('open');tRender()}
+if(t.id=='dtClose'||t.id=='dtBack')tClose()});
+
+const dkGo=(n,dir)=>{$('#dkTest').hidden=true;n=Math.max(0,Math.min(SLIDES.length-1,n));dkClear();const sl=SLIDES[n],st=$('#dkStage');
 const el=document.createElement('div');el.className='dk-slide';el.innerHTML=sl.h();st.replaceChildren(el);
 if(!RM){el.classList.add('enter',dir<0?'bwd':'fwd');requestAnimationFrame(()=>el.classList.add('live'))}else el.classList.add('live');
 DK.i=n;$('#dkSec').textContent=sl.t;$('#dkNum').textContent=`${n+1} / ${SLIDES.length}`;$('#dkPrev').disabled=n==0;$('#dkNext').textContent=n==SLIDES.length-1?'Sair':'Próximo';
@@ -903,8 +935,9 @@ $('#dkNext').addEventListener('click',()=>DK.i==SLIDES.length-1?dkClose():dkGo(D
 $('#deck').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){const n=+g.dataset.go;dkGo(n,n<DK.i?-1:1);return}
 const a=e.target.closest('[data-dk]');if(!a)return;const k=a.dataset.dk;
 if(k=='next')dkGo(DK.i+1,1);if(k=='first')dkGo(0,-1);if(k=='close')dkClose();
+if(k=='test'){tOpen();return}
 if(k=='demo'){dkClose();if(!items().length){S.cart={'1':1,'14':1};renderAll()}S.step=1;openModal(true)}});
-document.addEventListener('keydown',e=>{if($('#deck').hidden)return;if(['ArrowRight','PageDown',' '].includes(e.key)&&!e.target.matches('input')){e.preventDefault();if(DK.i<SLIDES.length-1)dkGo(DK.i+1,1)}
+document.addEventListener('keydown',e=>{if($('#deck').hidden)return;if(!$('#dkTest').hidden){if(e.key=='Escape'){e.stopImmediatePropagation();tClose()}return}if(['ArrowRight','PageDown',' '].includes(e.key)&&!e.target.matches('input')){e.preventDefault();if(DK.i<SLIDES.length-1)dkGo(DK.i+1,1)}
 if(['ArrowLeft','PageUp'].includes(e.key)&&!e.target.matches('input')){e.preventDefault();if(DK.i>0)dkGo(DK.i-1,-1)}
 if(e.key=='Home')dkGo(0,-1);if(e.key=='End')dkGo(SLIDES.length-1,1);if(e.key=='Escape'){e.stopImmediatePropagation();dkClose()}},true);
 let sx=null;$('#dkStage').addEventListener('pointerdown',e=>{if(e.pointerType!='mouse'&&!e.target.matches('input'))sx=e.clientX});
