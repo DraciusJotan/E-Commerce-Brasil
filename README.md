@@ -11,6 +11,7 @@ Loja on-line fictícia de **consumo consciente**, criada para o desafio prático
 - **Checkout com cadeado (Trava da Necessidade):** antes de pagar, três perguntas (preciso? cabe no orçamento? vou usar?). O cadeado só abre quando as três fazem sentido.
 - **Geladeira de 7 dias:** o item fica reservado por uma semana para a pessoa decidir com calma.
 - **Caixa que volta:** embalagem retornável com R$ 10 de cashback e entregas agrupadas por bairro.
+- **Modo apresentação:** 12 slides em tela cheia com a proposta do trabalho, o problema, as soluções e demonstrações ao vivo (cadeado, preço por uso, calculadora de aluguel, metas). Abre pelo botão "Apresentação" no topo ou pelo endereço com `#apresentacao`. Navegue com as setas do teclado ou deslizando o dedo.
 - **Tema claro e escuro**, layout responsivo para celular e animações (que respeitam a opção "reduzir movimento" do sistema).
 
 ## Como abrir

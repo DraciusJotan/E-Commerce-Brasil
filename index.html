@@ -436,11 +436,117 @@ img.wb{mix-blend-mode:multiply}
 .themeb svg{width:20px;height:20px;animation:spin .5s cubic-bezier(.3,1.5,.5,1)}
 @keyframes spin{from{transform:rotate(-90deg) scale(.4);opacity:0}}
 .themeb+.cartb{margin-left:0!important}
-.nav .themeb{margin-left:auto}.nav .links{margin-right:0}
+.nav .deckb{margin-left:auto}.nav .deckb+.themeb{margin-left:0}.nav .links{margin-right:0}
 @media(max-width:900px){.themeb{margin-left:auto}.nav .wrap{gap:10px}}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 html.tt,html.tt *{transition:background-color .35s,color .35s,border-color .35s!important}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== modo apresentação ===== */
+.deckb{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--bg);color:var(--ink);font-weight:650;font-size:14.5px}
+.deckb:hover{border-color:var(--ink)}
+.deckb svg{width:18px;height:18px;color:var(--blue)}
+@media(max-width:900px){.deckb span{display:none}.deckb{width:42px;padding:0;justify-content:center}.nav .deckb{margin-left:auto}.nav .deckb+.themeb{margin-left:0}}
+.deck{position:fixed;inset:0;z-index:85;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.deck[hidden]{display:none!important}
+.deck.opening{animation:deckin .5s cubic-bezier(.2,.9,.3,1)}
+@keyframes deckin{from{opacity:0;transform:scale(1.03)}}
+.dk-top{display:flex;align-items:center;gap:14px;padding:12px max(16px,3vw);border-bottom:1px solid var(--line)}
+.dk-top .logo{font-size:20px}
+.dk-sec{color:var(--mute);font-size:14px;font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dk-num{font-variant-numeric:tabular-nums;font-size:14px;color:var(--mute)}
+.dk-stage{flex:1;overflow:hidden;position:relative}
+.dk-slide{position:absolute;inset:0;overflow:auto;padding:clamp(20px,4vw,56px) max(16px,6vw);display:grid;align-content:center}
+.dk-slide>.in{max-width:1180px;width:100%;margin:0 auto}
+.dk-slide.enter>.in>*{animation:fadeup .7s cubic-bezier(.2,.8,.2,1) both}
+.dk-slide.enter>.in>*:nth-child(2){animation-delay:.08s}.dk-slide.enter>.in>*:nth-child(3){animation-delay:.16s}.dk-slide.enter>.in>*:nth-child(4){animation-delay:.24s}
+.dk-slide.fwd{animation:dkfwd .55s cubic-bezier(.2,.8,.2,1)}
+.dk-slide.bwd{animation:dkbwd .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes dkfwd{from{transform:translateX(7%);opacity:0}}
+@keyframes dkbwd{from{transform:translateX(-7%);opacity:0}}
+.dk-bot{display:flex;align-items:center;gap:12px;padding:12px max(16px,3vw);border-top:1px solid var(--line)}
+.dots{flex:1;display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.dots button{width:28px;height:28px;border:0;background:none;padding:0;display:grid;place-items:center}
+.dots button i{display:block;width:8px;height:8px;border-radius:999px;background:var(--line);transition:width .3s,background-color .3s}
+.dots button[aria-current=true] i{width:22px;background:var(--blue)}
+.dk-h{font-size:clamp(34px,5.4vw,72px);font-weight:850;line-height:1;letter-spacing:-.025em;max-width:15em}
+.dk-p{font-size:clamp(17px,1.8vw,22px);color:var(--mute);max-width:36em;margin-top:18px}
+.dk-k{font-size:14px;font-weight:700;color:var(--blue);margin-bottom:14px}
+.dk-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.dk-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+/* capa */
+.cover-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cover-grid div{aspect-ratio:1;border-radius:var(--r-m);overflow:hidden;background:radial-gradient(circle at 50% 42%,var(--plate2),var(--plate) 75%);animation:scalein .7s cubic-bezier(.2,.8,.2,1) calc(var(--i)*80ms + .2s) both}
+.cover-grid img{width:100%;height:100%;object-fit:cover}
+.cover-grid div:nth-child(2n){transform:translateY(16px)}
+/* problema */
+.loop{position:relative;display:grid;gap:12px}
+.cost{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:var(--r-m);padding:16px 18px;font-size:clamp(16px,1.6vw,19px);font-weight:600;background:var(--bg);opacity:0;transform:translateX(30px)}
+.cost b{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);font-size:20px}
+.dk-slide.live .cost{animation:costin .6s cubic-bezier(.2,.8,.2,1) forwards}
+.dk-slide.live .cost:nth-child(2){animation-delay:.5s}.dk-slide.live .cost:nth-child(3){animation-delay:1s}.dk-slide.live .cost:nth-child(1){animation-delay:.1s}
+@keyframes costin{to{opacity:1;transform:none}}
+/* causa: timeline */
+.tl{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin-top:36px;position:relative}
+.tl::before{content:"";position:absolute;left:8%;right:8%;top:21px;height:3px;background:var(--line)}
+.tl::after{content:"";position:absolute;left:8%;top:21px;height:3px;background:var(--red);width:0}
+.dk-slide.live .tl::after{animation:tlgo 2.6s cubic-bezier(.5,0,.3,1) .3s forwards}
+@keyframes tlgo{to{width:84%}}
+.tl div{display:grid;justify-items:center;text-align:center;gap:10px;font-size:14.5px;font-weight:600;position:relative;z-index:1}
+.tl i{width:44px;height:44px;border-radius:50%;background:var(--bg);border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:18px}
+.tl .act i{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 0 0 0 color-mix(in srgb,var(--blue) 50%,transparent);animation:pulse2 1.6s infinite 1.2s}
+@keyframes pulse2{100%{box-shadow:0 0 0 14px transparent}}
+.tl .act small{color:var(--blue);font-weight:700}
+.tl small{display:block;color:var(--mute);font-weight:500;font-size:12.5px;max-width:11em}
+/* resposta */
+.map{display:grid;gap:10px;margin-top:28px}
+.map button{all:unset;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1.15fr);gap:14px;align-items:center;border:1px solid var(--line);border-radius:var(--r-m);padding:14px 18px;background:var(--bg);transition:border-color .2s,transform .2s}
+.map button:hover,.map button:focus-visible{border-color:var(--ink);transform:translateX(4px)}
+.map button:focus-visible{outline:3px solid var(--blue)}
+.map .pr{color:var(--mute);font-size:15px}
+.map .ar{color:var(--blue);font-size:22px;text-align:center}
+.map .so{font-weight:700;font-size:clamp(16px,1.6vw,19px)}
+.dk-slide.enter .map button{animation:fadeup .55s cubic-bezier(.2,.8,.2,1) calc(var(--i)*90ms + .2s) both}
+/* trava */
+.qlist{display:grid;gap:12px;margin-top:26px}
+.qlist div{display:flex;align-items:center;gap:14px;font-size:clamp(17px,1.8vw,21px);font-weight:650}
+.qlist i{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-weight:900;border:2px solid var(--line);transition:all .4s}
+.qlist i.ok{background:var(--yel);border-color:var(--yel);color:#12133a}
+.qlist i.no{background:#e5384f;border-color:#e5384f;color:#fff}
+.dk-lock{display:grid;place-items:center}
+.dk-lock .lockw{max-width:300px}
+/* preço por uso */
+.cmp{display:grid;gap:18px}
+.cmpc{display:grid;grid-template-columns:84px minmax(0,1fr);gap:16px;align-items:center;border:1px solid var(--line);border-radius:var(--r-m);padding:14px}
+.cmpc .th{width:84px;height:84px}
+.cmpc b{font-size:clamp(22px,2.4vw,30px);font-weight:850;font-variant-numeric:tabular-nums}
+.cmpc .t{height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:8px}
+.cmpc .t i{display:block;height:100%;width:0;border-radius:5px;transition:width 1.2s cubic-bezier(.3,.8,.3,1) .3s}
+.cmpc small{color:var(--mute);font-size:14px;display:block}
+/* aluguel no slide */
+.dk-rent .stage{max-width:380px;justify-self:center}
+.dk-rent .stage img{mix-blend-mode:multiply}
+/* geladeira */
+.fsteps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:28px}
+.fsteps div{border:1px solid var(--line);border-radius:var(--r-m);padding:16px;display:grid;gap:6px}
+.fsteps b{font-size:18px}
+.fsteps span{color:var(--mute);font-size:14.5px}
+.dk-fridge svg{width:min(260px,60vw);height:auto;margin:0 auto;display:block}
+/* metas */
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:34px}
+.kp div{border-top:3px solid var(--blue);padding-top:14px}
+.kp b{display:block;font-size:clamp(40px,5.5vw,76px);font-weight:850;font-stretch:118%;line-height:1;font-variant-numeric:tabular-nums}
+.kp span{color:var(--mute);font-size:15px;display:block;margin-top:8px}
+/* medir */
+.ms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px}
+.ms>div{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;border:1px solid var(--line);border-radius:var(--r-m);padding:18px}
+.ms>div>i{width:44px;height:44px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-style:normal;font-weight:800;color:var(--blue)}
+.ms b{display:block;font-size:17px;margin-bottom:2px}
+.ms span{color:var(--mute);font-size:14.5px}
+.dk-end{text-align:center;justify-items:center}
+.dk-end .dk-h,.dk-end .dk-p{margin-inline:auto}
+.dk-end .dk-acts{justify-content:center}
+@media(max-width:760px){.dk-2{grid-template-columns:minmax(0,1fr)}.tl{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:24px}.tl::before,.tl::after{display:none}.kp{grid-template-columns:repeat(2,minmax(0,1fr))}.ms{grid-template-columns:minmax(0,1fr)}.fsteps{grid-template-columns:minmax(0,1fr)}.map button{grid-template-columns:minmax(0,1fr);gap:4px}.map .ar{display:none}.dk-slide{align-content:start}.dk-top .logo{display:none}.dots{display:none}.dk-bot{justify-content:space-between}.dk-lock{order:-1}.dk-lock .lockw{max-width:170px}.cover-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.cost{opacity:1;transform:none}.tl::after{width:84%}}
 </style>
 </head>
 <body>
@@ -448,6 +554,7 @@ html.tt,html.tt *{transition:background-color .35s,color .35s,border-color .35s!
 <nav class="nav"><div class="wrap">
 <a class="logo" href="#topo"><svg viewBox="0 0 26 30" aria-hidden="true"><path d="M6 13V9a7 7 0 0 1 14 0v4" fill="none" stroke="currentColor" stroke-width="3.5"/><rect x="1" y="12" width="24" height="18" rx="4" fill="#2b3df5"/><rect x="11" y="17" width="4" height="8" rx="2" fill="#ffd43b"/></svg>E-Market</a>
 <div class="links"><a href="#loja">Loja</a><a href="#alugue">Aluguel</a><a href="#caixa">Caixa que volta</a></div>
+<button class="deckb" id="deckBtn" aria-label="Abrir modo apresentação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M10 8.2v5.6l4.6-2.8z" fill="currentColor"/><path d="M8 21h8M12 17v4"/></svg><span>Apresentação</span></button>
 <button class="themeb" id="themeBtn" aria-label="Alternar tema claro e escuro"></button>
 <button class="btn cartb" id="openCart" aria-label="Abrir carrinho">Carrinho <b id="cc">0</b></button>
 </div></nav>
@@ -537,6 +644,11 @@ html.tt,html.tt *{transition:background-color .35s,color .35s,border-color .35s!
 <div class="sb" id="sb"></div><div class="sf" id="sf"></div>
 </div></div>
 
+<div class="deck" id="deck" role="dialog" aria-modal="true" aria-label="Modo apresentação" hidden>
+<div class="dk-top"><span class="logo"><svg viewBox="0 0 26 30" aria-hidden="true"><path d="M6 13V9a7 7 0 0 1 14 0v4" fill="none" stroke="currentColor" stroke-width="3.5"/><rect x="1" y="12" width="24" height="18" rx="4" fill="#2b3df5"/><rect x="11" y="17" width="4" height="8" rx="2" fill="#ffd43b"/></svg>E-Market</span><span class="dk-sec" id="dkSec"></span><span class="dk-num" id="dkNum"></span><button class="x" id="dkClose" aria-label="Sair da apresentação">✕</button></div>
+<div class="dk-stage" id="dkStage"></div>
+<div class="dk-bot"><button class="btn alt" id="dkPrev">Anterior</button><div class="dots" id="dkDots"></div><button class="btn b" id="dkNext">Próximo</button></div>
+</div>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -745,6 +857,60 @@ const im=t.closest('.prod')?.querySelector('.pv img')||(t.closest('#pmodal')&&$(
 const r=im.getBoundingClientRect(),c=$('#openCart').getBoundingClientRect();const g=im.cloneNode();g.className='flyer';g.removeAttribute('loading');Object.assign(g.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});document.body.append(g);
 const dx=c.left+c.width/2-(r.left+r.width/2),dy=c.top+c.height/2-(r.top+r.height/2);
 g.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx*.55}px,${dy*.55-60}px) scale(.5)`,opacity:1,offset:.55},{transform:`translate(${dx}px,${dy}px) scale(.08)`,opacity:.4}],{duration:800,easing:'cubic-bezier(.45,0,.25,1)'}).onfinish=()=>{g.remove();bump()}},true);
+
+/* ===== Modo apresentação ===== */
+const DK={i:0,timers:[]};
+const dkClear=()=>{DK.timers.forEach(t=>{clearInterval(t);clearTimeout(t)});DK.timers=[]};
+const thumb=id=>`<div class="th">${pic(byId(id))}</div>`;
+const FRIDGE=()=>document.querySelector('.fridge-svg')?.outerHTML||'';
+const SLIDES=[
+{t:'Capa',h:()=>`<div class="in dk-2"><div><p class="dk-k">Comitê de Inovação Sustentável e Consumo Responsável</p><h2 class="dk-h">Comprar melhor, devolver menos.</h2><p class="dk-p">A proposta da E-Market Brasil para enfrentar a crise das devoluções e reduzir o impacto de cada pedido, sem deixar de vender.</p><div class="dk-acts"><button class="btn b" data-dk="next">Começar</button></div></div><div class="cover-grid">${[7,13,14,1,3,11].map((id,i)=>`<div style="--i:${i}">${pic(byId(id))}</div>`).join('')}</div></div>`},
+{t:'O problema',h:()=>`<div class="in dk-2"><div><p class="dk-k">A proposta do trabalho</p><h2 class="dk-h">A devolução virou crise.</h2><p class="dk-p">Ondas de devolução lotam a logística reversa. O comitê pediu uma resposta que reduza devoluções e torne a operação mais sustentável.</p></div><div><p style="font-weight:650;margin-bottom:12px">Cada item que volta traz:</p><div class="loop"><div class="cost"><b>+</b>Embalagem plástica que vira lixo</div><div class="cost"><b>+</b>Um frete a mais, ida e volta</div><div class="cost"><b>−</b>Um produto que talvez não possa ser revendido como novo</div></div></div></div>`},
+{t:'A causa',h:()=>`<div class="in"><p class="dk-k">Onde o problema começa</p><h2 class="dk-h">O arrependimento começa antes do pagamento.</h2><p class="dk-p">Boa parte das devoluções por arrependimento nasce de compras por impulso. Resolver depois da entrega é caro. A E-Market age no checkout, o último momento antes do erro.</p><div class="tl"><div><i>1</i>Navega</div><div><i>2</i>Sente o impulso</div><div class="act"><i>3</i>Vai pagar<small>Aqui entra a trava</small></div><div><i>4</i>Recebe</div><div><i>5</i>Se arrepende</div><div><i>6</i>Devolve</div></div></div>`},
+{t:'Nossa resposta',h:()=>`<div class="in"><p class="dk-k">Como o site resolve</p><h2 class="dk-h" style="font-size:clamp(30px,4.2vw,56px)">Cada problema tem uma ferramenta na loja.</h2><div class="map">${[['Compra por impulso','Trava da Necessidade no checkout',4],['Etiqueta que engana pelo preço','Preço por uso em cada produto',5],['Comprar o que se usa duas vezes','Aluguel por diária',6],['Dúvida na hora de pagar','Geladeira de 7 dias',7],['Plástico e frete a mais','Caixa que volta e entrega agrupada',8]].map(([p,so,g],i)=>`<button data-go="${g}" style="--i:${i}"><span class="pr">${p}</span><span class="ar" aria-hidden="true">→</span><span class="so">${so}</span></button>`).join('')}</div></div>`},
+{t:'Trava da Necessidade',h:()=>`<div class="in dk-2"><div><p class="dk-k">Funcionalidade 1 de 5</p><h2 class="dk-h">Um cadeado com três segredos.</h2><p class="dk-p">Antes de pagar, a pessoa responde três perguntas. O cadeado só abre quando as três fazem sentido. Compra por impulso pode ir para a geladeira, e o que se usa pouco pode virar aluguel.</p><div class="qlist" id="dkQ"><div><i>?</i>Eu preciso disso?</div><div><i>?</i>Cabe no meu orçamento?</div><div><i>?</i>Vai ser útil de verdade?</div></div><div class="dk-acts"><button class="btn b" data-dk="demo">Testar a trava no site</button></div></div><div class="dk-lock" id="dkLock"></div></div>`,
+ on:()=>{const w=mkLock();$('#dkLock').append(w);const Q=[...document.querySelectorAll('#dkQ i')];
+ const SQ=[['idle','idle','idle'],['ok','idle','idle'],['ok','no','idle'],['ok','ok','idle'],['ok','ok','ok'],['ok','ok','ok'],['ok','ok','ok']];let k=0;
+ const step=()=>{const d=SQ[k];setLock(w,d);Q.forEach((q,i)=>{q.className=d[i]=='idle'?'':d[i];q.textContent=d[i]=='ok'?'✓':d[i]=='no'?'✕':'?'});k=(k+1)%SQ.length};
+ step();if(!RM)DK.timers.push(setInterval(step,1200));else setLock(w,['ok','ok','ok'])}},
+{t:'Preço por uso',h:()=>{const a=byId(7),pa=cpu(a),pb=89/600;return`<div class="in dk-2"><div><p class="dk-k">Funcionalidade 2 de 5</p><h2 class="dk-h">O durável vence pela conta.</h2><p class="dk-p">Toda etiqueta mostra quanto custa cada uso. A panela mais cara na etiqueta sai pela metade do preço a cada vez que você cozinha.</p></div><div class="cmp"><div class="cmpc">${thumb(7)}<div><small>Panela de ferro fundido, ${brl(a.p)}, cerca de 3.000 usos</small><b class="cnt" data-v="${pa}">R$ 0,000</b> <small style="display:inline">por uso</small><div class="t"><i style="background:var(--green)" data-w="${pa/pb*100}"></i></div></div></div><div class="cmpc"><div class="th" style="display:grid;place-items:center;font-weight:800;color:var(--mute)">R$ 89</div><div><small>Antiaderente de R$ 89,00, trocada a cada 2 anos (cerca de 600 usos)</small><b class="cnt" data-v="${pb}">R$ 0,000</b> <small style="display:inline">por uso</small><div class="t"><i style="background:var(--red)" data-w="100"></i></div></div></div></div></div>`},
+ on:()=>{document.querySelectorAll('#dkStage .t i').forEach(i=>requestAnimationFrame(()=>i.style.width=i.dataset.w+'%'));document.querySelectorAll('#dkStage .cnt').forEach(el=>{const v=+el.dataset.v,t0=performance.now();const f=t=>{const k=RM?1:Math.min(1,(t-t0)/1400),e=1-Math.pow(1-k,3);el.textContent=brlc(v*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}},
+{t:'Alugar ou comprar',h:()=>`<div class="in dk-2 dk-rent"><div><p class="dk-k">Funcionalidade 3 de 5</p><h2 class="dk-h" style="font-size:clamp(32px,4.6vw,62px)">Usa pouco? Alugue.</h2><p class="dk-p">Ferramentas e itens de lazer ficam parados no armário. Arraste e veja quando comprar passa a valer a pena.</p><label class="slider" for="dkDays"><span>Furar paredes por <b id="dkD">3 dias</b></span><input type="range" id="dkDays" min="1" max="30" value="3"></label><div class="bars"><div class="bar r"><span>Alugar</span><b id="dkRV"></b><div class="t"><i id="dkRI"></i></div></div><div class="bar c"><span>Comprar</span><b>${brl(byId(13).p)}</b><div class="t"><i id="dkCI"></i></div></div></div><p class="verdict" id="dkV"></p></div><div class="stage"><div class="pic">${pic(byId(13))}</div><span class="ribbon">${brl(byId(13).r)} por dia</span></div></div>`,
+ on:()=>{const p=byId(13),el=$('#dkDays');const u=()=>{const d=+el.value,rt=p.r*d,mx=Math.max(rt,p.p);$('#dkD').textContent=d+(d>1?' dias':' dia');tw($('#dkRV'),rt);$('#dkRI').style.width=rt/mx*100+'%';$('#dkCI').style.width=p.p/mx*100+'%';$('#dkV').innerHTML=rt<p.p?`Alugar economiza <em>${brl(p.p-rt)}</em>. Comprar só compensa a partir de ${Math.ceil(p.p/p.r)} dias.`:'Com esse uso, comprar já compensa.'};el.addEventListener('input',u);u();
+ if(!RM){let d=3,dir=1;const auto=setInterval(()=>{d+=dir*1;if(d>=16||d<=2)dir*=-1;el.value=d;u()},260);DK.timers.push(auto);el.addEventListener('pointerdown',()=>clearInterval(auto),{once:true});el.addEventListener('keydown',()=>clearInterval(auto),{once:true});DK.timers.push(setTimeout(()=>clearInterval(auto),5200))}}},
+{t:'Geladeira de 7 dias',h:()=>`<div class="in dk-2"><div class="dk-fridge">${FRIDGE()}</div><div><p class="dk-k">Funcionalidade 4 de 5</p><h2 class="dk-h">O impulso vira venda adiada, não perdida.</h2><div class="fsteps"><div><b>Guardar</b><span>Na dúvida, o item vai para a geladeira.</span></div><div><b>Esperar 7 dias</b><span>O preço fica reservado durante a semana.</span></div><div><b>Decidir</b><span>Quero leva ao carrinho. Desisti é uma compra evitada.</span></div></div></div></div>`},
+{t:'Logística verde',h:()=>`<div class="in"><p class="dk-k">Funcionalidade 5 de 5</p><h2 class="dk-h">Zero plástico, menos viagens.</h2><div class="dk-2" style="margin-top:28px;align-items:start"><div class="ms" style="grid-template-columns:minmax(0,1fr);margin-top:0"><div><i>1</i><div><b>Sem plástico de uso único</b><span>Caixa retornável ou papel kraft, com calço de papel.</span></div></div><div><i>2</i><div><b>Entrega agrupada por bairro</b><span>Frete grátis acima de R$ 199 como incentivo.</span></div></div><div><i>3</i><div><b>Devoluções triadas</b><span>O que volta vira item revisado, com garantia.</span></div></div></div><div><div class="label in" id="dkLabel"><div class="code"><small>Caixa retornável</small>EM-4821</div><div><div class="lives">${Array.from({length:10},(_,i)=>`<i data-n="${i}">${i+1}</i>`).join('')}</div><p>R$ 10 de cashback quando a caixa volta. Até 10 viagens por caixa.</p></div></div></div></div></div>`,
+ on:()=>{const L=[...document.querySelectorAll('#dkLabel .lives i')];let n=0;const f=()=>{L.forEach((x,i)=>x.classList.toggle('f',i<n));n=n>=10?0:n+1};f();if(!RM)DK.timers.push(setInterval(f,450));else L.forEach(x=>x.classList.add('f'))}},
+{t:'Metas',h:()=>`<div class="in"><p class="dk-k">Metas para 12 meses</p><h2 class="dk-h">Onde queremos chegar.</h2><div class="kp"><div><b class="kc" data-to="-30" data-suf="%">0%</b><span>devoluções por arrependimento</span></div><div><b>0 g</b><span>de plástico de uso único por pedido</span></div><div><b class="kc" data-to="60" data-suf="%">0%</b><span>das entregas agrupadas por bairro</span></div><div><b class="kc" data-to="10" data-suf="">0</b><span>viagens por caixa retornável</span></div></div><p class="dk-p" style="font-size:15px">Metas propostas pelo comitê, a validar em piloto.</p></div>`,
+ on:()=>document.querySelectorAll('#dkStage .kc').forEach(el=>{const to=+el.dataset.to,t0=performance.now();const f=t=>{const k=RM?1:Math.min(1,(t-t0)/1300),e=1-Math.pow(1-k,3),v=Math.round(to*e);el.textContent=(v<0?'−'+(-v):v)+el.dataset.suf;if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})},
+{t:'Como medir',h:()=>`<div class="in"><p class="dk-k">Indicadores</p><h2 class="dk-h">Como vamos medir.</h2><div class="ms"><div><i>%</i><div><b>Taxa de devolução por arrependimento</b><span>Antes e depois da Trava da Necessidade.</span></div></div><div><i>7d</i><div><b>Conversão da geladeira</b><span>Quantos itens guardados viram compra depois de 7 dias.</span></div></div><div><i>g</i><div><b>Plástico por pedido</b><span>E quantas caixas retornáveis voltam por mês.</span></div></div><div><i>R$</i><div><b>Ticket médio e receita de aluguel</b><span>Para mostrar que vender melhor não é vender menos.</span></div></div></div></div>`},
+{t:'Encerramento',h:()=>`<div class="in dk-end" style="display:grid"><div class="lockw" id="dkEndLock" style="max-width:160px"></div><h2 class="dk-h" style="margin-top:18px">Obrigado.</h2><p class="dk-p">A loja está no ar com tudo funcionando. Explore os produtos, alugue, teste o cadeado no checkout.</p><div class="dk-acts"><button class="btn b" data-dk="close">Explorar a loja</button><button class="btn alt" data-dk="demo">Testar a trava</button><button class="btn alt" data-dk="first">Recomeçar</button></div></div>`,
+ on:()=>{const w=mkLock();$('#dkEndLock').replaceWith(w);w.style.maxWidth='160px';DK.timers.push(setTimeout(()=>{setLock(w,['ok','ok','ok']);if(!RM){LW0=w;}},500))}}];
+let LW0=null;
+const dkGo=(n,dir)=>{n=Math.max(0,Math.min(SLIDES.length-1,n));dkClear();const sl=SLIDES[n],st=$('#dkStage');
+const el=document.createElement('div');el.className='dk-slide';el.innerHTML=sl.h();st.replaceChildren(el);
+if(!RM){el.classList.add('enter',dir<0?'bwd':'fwd');requestAnimationFrame(()=>el.classList.add('live'))}else el.classList.add('live');
+DK.i=n;$('#dkSec').textContent=sl.t;$('#dkNum').textContent=`${n+1} / ${SLIDES.length}`;$('#dkPrev').disabled=n==0;$('#dkNext').textContent=n==SLIDES.length-1?'Sair':'Próximo';
+$('#dkDots').innerHTML=SLIDES.map((x,i)=>`<button data-go="${i}" aria-label="Slide ${i+1}: ${x.t}" aria-current="${i==n}"><i></i></button>`).join('');
+sl.on&&sl.on()};
+const dkOpen=(n=0)=>{const d=$('#deck');d.hidden=false;d.classList.remove('opening');void d.offsetWidth;if(!RM)d.classList.add('opening');document.body.style.overflow='hidden';dkGo(n,1);
+try{history.replaceState(null,'','#apresentacao')}catch(e){}try{document.documentElement.requestFullscreen?.().catch(()=>{})}catch(e){}$('#dkNext').focus()};
+const dkClose=()=>{dkClear();$('#deck').hidden=true;document.body.style.overflow='';try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}};
+$('#deckBtn').addEventListener('click',()=>dkOpen(0));
+$('#dkClose').addEventListener('click',dkClose);
+$('#dkPrev').addEventListener('click',()=>dkGo(DK.i-1,-1));
+$('#dkNext').addEventListener('click',()=>DK.i==SLIDES.length-1?dkClose():dkGo(DK.i+1,1));
+$('#deck').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){const n=+g.dataset.go;dkGo(n,n<DK.i?-1:1);return}
+const a=e.target.closest('[data-dk]');if(!a)return;const k=a.dataset.dk;
+if(k=='next')dkGo(DK.i+1,1);if(k=='first')dkGo(0,-1);if(k=='close')dkClose();
+if(k=='demo'){dkClose();if(!items().length){S.cart={'1':1,'14':1};renderAll()}S.step=1;openModal(true)}});
+document.addEventListener('keydown',e=>{if($('#deck').hidden)return;if(['ArrowRight','PageDown',' '].includes(e.key)&&!e.target.matches('input')){e.preventDefault();if(DK.i<SLIDES.length-1)dkGo(DK.i+1,1)}
+if(['ArrowLeft','PageUp'].includes(e.key)&&!e.target.matches('input')){e.preventDefault();if(DK.i>0)dkGo(DK.i-1,-1)}
+if(e.key=='Home')dkGo(0,-1);if(e.key=='End')dkGo(SLIDES.length-1,1);if(e.key=='Escape'){e.stopImmediatePropagation();dkClose()}},true);
+let sx=null;$('#dkStage').addEventListener('pointerdown',e=>{if(e.pointerType!='mouse'&&!e.target.matches('input'))sx=e.clientX});
+$('#dkStage').addEventListener('pointerup',e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>60){dx<0?(DK.i<SLIDES.length-1&&dkGo(DK.i+1,1)):(DK.i>0&&dkGo(DK.i-1,-1))}});
+if(location.hash=='#apresentacao')setTimeout(()=>dkOpen(0),300);
+addEventListener('hashchange',()=>{if(location.hash=='#apresentacao'&&$('#deck').hidden)dkOpen(0)});
 renderHero();tick();const clk=setInterval(tick,1000);renderChips();renderAll();
 }
 </script>
